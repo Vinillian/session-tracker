@@ -1,0 +1,589 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+h1 {
+    color: #333;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1em;
+}
+
+.section {
+    margin-bottom: 40px;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+}
+
+h2 {
+    color: #444;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+h3 {
+    color: #555;
+    margin: 20px 0 15px 0;
+    font-size: 1.4em;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.button-group {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.btn-success {
+    background: #48bb78;
+    color: white;
+}
+
+.btn-warning {
+    background: #ed8936;
+    color: white;
+}
+
+.btn-danger {
+    background: #f56565;
+    color: white;
+}
+
+.btn-secondary {
+    background: #a0aec0;
+    color: white;
+}
+
+.btn-logout {
+    background: #f56565;
+    color: white;
+    padding: 8px 20px;
+    font-size: 14px;
+}
+
+.auth-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.error {
+    background: #fed7d7;
+    color: #c53030;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border-left: 4px solid #c53030;
+}
+
+.success {
+    background: #c6f6d5;
+    color: #22543d;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border-left: 4px solid #38a169;
+}
+
+.info {
+    background: #bee3f8;
+    color: #2c5282;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    border-left: 4px solid #4299e1;
+}
+
+.session-list {
+    display: grid;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.session-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.session-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.session-date {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #2d3748;
+}
+
+.session-time {
+    color: #718096;
+    font-size: 1.1em;
+}
+
+.session-duration {
+    background: #4299e1;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9em;
+}
+
+.session-tasks {
+    margin: 10px 0;
+    font-weight: bold;
+    color: #38a169;
+}
+
+.session-comments {
+    color: #4a5568;
+    font-style: italic;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.hidden {
+    display: none;
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.user-greeting {
+    font-size: 1.3em;
+    color: #2d3748;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #667eea;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #718096;
+    font-size: 0.9em;
+}
+
+.loading {
+    text-align: center;
+    padding: 30px;
+    color: #718096;
+}
+
+.loading::after {
+    content: '...';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+        border-radius: 10px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* === СТИЛИ ДЛЯ ЗАДАЧ === */
+
+.task-section-toggle {
+    background: #4a5568;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+.task-section-toggle:hover {
+    background: #2d3748;
+}
+
+.task-list {
+    display: grid;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.task-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s;
+}
+
+.task-card:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.task-link a {
+    color: #4299e1;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.task-link a:hover {
+    color: #3182ce;
+    text-decoration: underline;
+}
+
+.task-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.difficulty-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.difficulty-1 { background: #48bb78; }
+.difficulty-2 { background: #38a169; }
+.difficulty-3 { background: #2f855a; }
+.difficulty-4 { background: #276749; }
+.difficulty-5 { background: #d69e2e; }
+.difficulty-6 { background: #ed8936; }
+.difficulty-7 { background: #dd6b20; }
+.difficulty-8 { background: #c05621; }
+.difficulty-9 { background: #e53e3e; }
+.difficulty-10 { background: #c53030; }
+
+.btn-delete {
+    background: #fc8181;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.btn-delete:hover {
+    background: #f56565;
+}
+
+.task-comment {
+    color: #4a5568;
+    margin: 10px 0;
+    padding: 10px;
+    background: #f7fafc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.task-date {
+    color: #a0aec0;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+/* Форма добавления задачи */
+.task-form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.task-form-row {
+    display: grid;
+    grid-template-columns: 1fr 150px;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.task-form-row textarea {
+    grid-column: 1 / -1;
+}
+
+.difficulty-slider {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.difficulty-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #718096;
+}
+
+/* Гистограмма сложности */
+.difficulty-histogram {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    height: 120px;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+.histogram-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30px;
+}
+
+.bar {
+    width: 20px;
+    background: linear-gradient(to top, #4299e1, #3182ce);
+    border-radius: 3px 3px 0 0;
+    transition: height 0.3s;
+}
+
+.bar-label {
+    margin-top: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #4a5568;
+}
+
+.bar-count {
+    font-size: 10px;
+    color: #a0aec0;
+    margin-top: 2px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .task-form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .task-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .difficulty-histogram {
+        height: 100px;
+        gap: 8px;
+        overflow-x: auto;
+    }
+    
+    .histogram-bar {
+        min-width: 25px;
+    }
+}
+
+/* === ДОПОЛНИТЕЛЬНЫЕ СТИЛИ === */
+
+.session-date-small {
+    color: #a0aec0;
+    font-size: 12px;
+    margin-top: 10px;
+    text-align: right;
+}
+
+/* Кнопка тестового входа */
+.btn-secondary {
+    background: #a0aec0;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #718096;
+}
+
+/* Стили для сообщений с иконками */
+#message i {
+    margin-right: 10px;
+}
+
+/* Адаптивные улучшения */
+@media (max-width: 768px) {
+    .task-form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .task-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .difficulty-histogram {
+        height: 100px;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 10px;
+    }
+    
+    .histogram-bar {
+        min-width: 25px;
+    }
+    
+    .bar-label, .bar-count {
+        font-size: 10px;
+    }
+}
