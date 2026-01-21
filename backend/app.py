@@ -8,8 +8,8 @@ from config import Config
 
 app = Flask(__name__)
 
-# CORS настройки
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+# CORS настройки - разрешаем все origins для Replit
+CORS(app)
 
 app.config.from_object(Config)
 
@@ -39,19 +39,17 @@ def index():
 def health():
     return jsonify({
         'status': 'healthy', 
-        'message': 'API работает',
-        'python_version': sys.version,
-        'environment': os.environ.get('RAILWAY_ENVIRONMENT', 'development')
+        'message': 'API работает на Replit',
+        'python_version': sys.version.split()[0]
     })
 
-# Инициализация БД при запуске
+# Инициализация БД
 init_db()
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8080))
+    port = 5000  # Replit использует 5000
     print("=" * 50)
-    print(f"🚀 Session Tracker API запущен")
+    print(f"🚀 Session Tracker API запущен на Replit")
     print(f"🌐 Порт: {port}")
-    print(f"🐍 Python: {sys.version}")
     print("=" * 50)
     app.run(host='0.0.0.0', port=port, debug=False)
