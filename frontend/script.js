@@ -1,4 +1,4 @@
-﻿const API_URL = 'https://session-tracker.up.railway.app/api';
+﻿const API_URL = 'https://ВАШ_ПРОЕКТ.ВАШ_ЛОГИН.repl.co/api';
 
 let currentUser = null;
 let currentToken = null;
@@ -1261,3 +1261,4 @@ function exportTasks() {
     
     showMessage('Р—Р°РґР°С‡Рё СЌРєСЃРїРѕСЂС‚РёСЂРѕРІР°РЅС‹ РІ CSV', 'success');
 }
+
