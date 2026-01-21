@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Session Tracker - Трекер задач</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Общий хедер -->
+        <header class="main-header">
+            <div class="logo">
+                <i class="fas fa-chart-line"></i>
+                <span>Session Tracker</span>
+            </div>
+            <nav class="main-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="sessions.html" class="nav-link">
+                    <i class="fas fa-history"></i> Все сессии
+                </a>
+                <a href="tasks.html" class="nav-link active">
+                    <i class="fas fa-tasks"></i> Задачи
+                </a>
+                <button class="btn-logout" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </button>
+            </nav>
+        </header>
+        
+        <div id="message" class="hidden"></div>
+        
+        <!-- Основной контент страницы задач -->
+        <div id="mainApp" class="hidden">
+            <div class="page-header">
+                <h1><i class="fas fa-tasks"></i> Трекер задач</h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" onclick="goToDashboard()">
+                        <i class="fas fa-arrow-left"></i> Назад в Dashboard
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Форма добавления задачи -->
+            <div class="section">
+                <h2><i class="fas fa-plus"></i> Добавить новую задачу</h2>
+                <div class="task-form">
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label for="taskUrl"><i class="fas fa-link"></i> Ссылка на задачу *</label>
+                            <input type="url" id="taskUrl" placeholder="https://leetcode.com/problems/example">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label for="difficulty"><i class="fas fa-chart-line"></i> Сложность (1-10)</label>
+                            <div class="difficulty-selector">
+                                <input type="number" id="difficulty" min="1" max="10" placeholder="1-10">
+                                <div class="difficulty-slider-container">
+                                    <input type="range" id="difficultySlider" min="1" max="10" value="5" 
+                                           oninput="document.getElementById('difficulty').value = this.value">
+                                    <div class="slider-labels">
+                                        <span>1</span>
+                                        <span>5</span>
+                                        <span>10</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskComment"><i class="fas fa-comment"></i> Комментарий (необязательно)</label>
+                        <textarea id="taskComment" rows="3" placeholder="Опишите задачу, что нужно сделать, какие технологии..."></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-success" onclick="addTask()">
+                            <i class="fas fa-plus"></i> Добавить задачу
+                        </button>
+                        <button class="btn btn-warning" onclick="addTestTask()">
+                            <i class="fas fa-vial"></i> Добавить тестовую задачу
+                        </button>
+                        <button class="btn btn-secondary" onclick="clearTaskForm()">
+                            <i class="fas fa-eraser"></i> Очистить форму
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Статистика задач -->
+            <div class="section">
+                <h2><i class="fas fa-chart-bar"></i> Статистика задач</h2>
+                <div class="stats" id="taskStats">
+                    <!-- Статистика будет загружена здесь -->
+                </div>
+            </div>
+            
+            <!-- Фильтры и сортировка -->
+            <div class="section">
+                <h2><i class="fas fa-filter"></i> Фильтры и поиск</h2>
+                <div class="filters">
+                    <div class="filter-group">
+                        <label>По сложности:</label>
+                        <div class="filter-buttons">
+                            <button class="btn-filter active" onclick="filterTasks('all')">Все</button>
+                            <button class="btn-filter" onclick="filterTasks('easy')">Легкие (1-3)</button>
+                            <button class="btn-filter" onclick="filterTasks('medium')">Средние (4-7)</button>
+                            <button class="btn-filter" onclick="filterTasks('hard')">Сложные (8-10)</button>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>Поиск:</label>
+                        <div class="search-box">
+                            <input type="text" id="taskSearchInput" placeholder="Поиск по комментариям или ссылке..." 
+                                   onkeyup="searchTasks()">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>Сортировка:</label>
+                        <select id="taskSortSelect" onchange="sortTasks()">
+                            <option value="newest">Сначала новые</option>
+                            <option value="oldest">Сначала старые</option>
+                            <option value="difficulty-desc">По убыванию сложности</option>
+                            <option value="difficulty-asc">По возрастанию сложности</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Список задач -->
+            <div class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-list"></i> Мои задачи</h2>
+                    <div class="section-actions">
+                        <button class="btn btn-secondary" onclick="loadTasks()">
+                            <i class="fas fa-sync-alt"></i> Обновить
+                        </button>
+                        <button class="btn btn-outline" onclick="exportTasks()">
+                            <i class="fas fa-download"></i> Экспорт
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="tasksList" class="task-list">
+                    <!-- Задачи будут загружены здесь -->
+                </div>
+                
+                <div id="noTasksMessage" class="hidden info">
+                    <i class="fas fa-info-circle"></i> У вас еще нет задач. Добавьте первую!
+                </div>
+                
+                <div id="loadingTasks" class="loading">
+                    Загрузка задач...
+                </div>
+            </div>
+        </div>
+        
+        <!-- Секция авторизации (скрыта когда авторизован) -->
+        <div id="authSection" class="hidden">
+            <div class="auth-message">
+                <h2><i class="fas fa-lock"></i> Требуется авторизация</h2>
+                <p>Пожалуйста, войдите в систему чтобы управлять задачами</p>
+                <button class="btn btn-primary" onclick="window.location.href='index.html'">
+                    <i class="fas fa-sign-in-alt"></i> Перейти ко входу
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
