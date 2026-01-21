@@ -1,19 +1,14 @@
+import os
 from flask import Flask, jsonify
 from flask_cors import CORS
 from routes import api
 from database import init_db
 from config import Config
-import os
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {
-    "origins": [
-        "https://session-tracker.vercel.app",  # Vercel фронтенд
-        "http://localhost:3000",               # Локальная разработка
-        "http://127.0.0.1:5500",              # Live Server
-        "http://localhost:5000"               # Локальный сервер
-    ]
-}})
+
+# CORS настройки
+CORS(app)
 
 app.config.from_object(Config)
 
@@ -36,6 +31,10 @@ def index():
             'GET  /api/tasks/stats'
         ]
     })
+
+@app.route('/api/health')
+def health():
+    return jsonify({'status': 'healthy', 'message': 'API работает'})
 
 if __name__ == '__main__':
     init_db()
