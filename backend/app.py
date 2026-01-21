@@ -1,4 +1,4 @@
-import os
+﻿import os
 from flask import Flask, jsonify
 from flask_cors import CORS
 from routes import api
@@ -7,8 +7,8 @@ from config import Config
 
 app = Flask(__name__)
 
-# CORS настройки
-CORS(app)
+# CORS настройки - разрешаем все для теста
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 app.config.from_object(Config)
 
@@ -38,7 +38,7 @@ def health():
 
 if __name__ == '__main__':
     init_db()
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 8080))  # Railway использует 8080
     print("=" * 50)
     print(f"🚀 Session Tracker API запущен")
     print(f"🌐 Порт: {port}")
