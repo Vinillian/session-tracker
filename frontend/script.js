@@ -1,16 +1,16 @@
-const API_URL = 'https://session-tracker.up.railway.app/api';
+﻿const API_URL = 'https://session-tracker.up.railway.app/api';
 
 let currentUser = null;
 let currentToken = null;
-let allSessions = []; // Для хранения всех сессий (на странице sessions.html)
-let filteredSessions = []; // Отфильтрованные сессии
+let allSessions = []; // Р”Р»СЏ С…СЂР°РЅРµРЅРёСЏ РІСЃРµС… СЃРµСЃСЃРёР№ (РЅР° СЃС‚СЂР°РЅРёС†Рµ sessions.html)
+let filteredSessions = []; // РћС‚С„РёР»СЊС‚СЂРѕРІР°РЅРЅС‹Рµ СЃРµСЃСЃРёРё
 
-// Определяем на какой странице находимся
+// РћРїСЂРµРґРµР»СЏРµРј РЅР° РєР°РєРѕР№ СЃС‚СЂР°РЅРёС†Рµ РЅР°С…РѕРґРёРјСЃСЏ
 const currentPage = window.location.pathname.split('/').pop();
 
-// ==================== ОБЩИЕ ФУНКЦИИ ====================
+// ==================== РћР‘Р©РР• Р¤РЈРќРљР¦РР ====================
 
-// Загружаем данные из localStorage при запуске
+// Р—Р°РіСЂСѓР¶Р°РµРј РґР°РЅРЅС‹Рµ РёР· localStorage РїСЂРё Р·Р°РїСѓСЃРєРµ
 window.addEventListener('DOMContentLoaded', () => {
     const savedUser = localStorage.getItem('user');
     const savedToken = localStorage.getItem('token');
@@ -23,11 +23,11 @@ window.addEventListener('DOMContentLoaded', () => {
         showAuth();
     }
     
-    // Устанавливаем текущее время для форм
+    // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С‚РµРєСѓС‰РµРµ РІСЂРµРјСЏ РґР»СЏ С„РѕСЂРј
     setupTimeInputs();
 });
 
-// Инициализация страницы
+// РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃС‚СЂР°РЅРёС†С‹
 function initPage() {
     if (currentPage === 'index.html' || currentPage === '') {
         initDashboard();
@@ -37,7 +37,7 @@ function initPage() {
     showMainApp();
 }
 
-// Показать форму авторизации
+// РџРѕРєР°Р·Р°С‚СЊ С„РѕСЂРјСѓ Р°РІС‚РѕСЂРёР·Р°С†РёРё
 function showAuth() {
     const authSection = document.getElementById('authSection');
     const mainApp = document.getElementById('mainApp');
@@ -46,15 +46,15 @@ function showAuth() {
     if (mainApp) mainApp.classList.add('hidden');
     
     if (currentPage === 'sessions.html') {
-        // На странице сессий показываем специальное сообщение
+        // РќР° СЃС‚СЂР°РЅРёС†Рµ СЃРµСЃСЃРёР№ РїРѕРєР°Р·С‹РІР°РµРј СЃРїРµС†РёР°Р»СЊРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ
         const authMessage = document.getElementById('authMessage');
         if (authMessage) {
             authMessage.innerHTML = `
                 <div class="auth-message">
-                    <h2><i class="fas fa-lock"></i> Требуется авторизация</h2>
-                    <p>Пожалуйста, войдите в систему чтобы просматривать сессии</p>
+                    <h2><i class="fas fa-lock"></i> РўСЂРµР±СѓРµС‚СЃСЏ Р°РІС‚РѕСЂРёР·Р°С†РёСЏ</h2>
+                    <p>РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІРѕР№РґРёС‚Рµ РІ СЃРёСЃС‚РµРјСѓ С‡С‚РѕР±С‹ РїСЂРѕСЃРјР°С‚СЂРёРІР°С‚СЊ СЃРµСЃСЃРёРё</p>
                     <button class="btn btn-primary" onclick="window.location.href='index.html'">
-                        <i class="fas fa-sign-in-alt"></i> Перейти ко входу
+                        <i class="fas fa-sign-in-alt"></i> РџРµСЂРµР№С‚Рё РєРѕ РІС…РѕРґСѓ
                     </button>
                 </div>
             `;
@@ -62,7 +62,7 @@ function showAuth() {
     }
 }
 
-// Показать основное приложение
+// РџРѕРєР°Р·Р°С‚СЊ РѕСЃРЅРѕРІРЅРѕРµ РїСЂРёР»РѕР¶РµРЅРёРµ
 function showMainApp() {
     const authSection = document.getElementById('authSection');
     const mainApp = document.getElementById('mainApp');
@@ -70,14 +70,14 @@ function showMainApp() {
     if (authSection) authSection.classList.add('hidden');
     if (mainApp) mainApp.classList.remove('hidden');
     
-    // Обновляем приветствие
+    // РћР±РЅРѕРІР»СЏРµРј РїСЂРёРІРµС‚СЃС‚РІРёРµ
     const userGreeting = document.getElementById('userGreeting');
     if (userGreeting && currentUser) {
-        userGreeting.textContent = `Привет, ${currentUser.username}!`;
+        userGreeting.textContent = `РџСЂРёРІРµС‚, ${currentUser.username}!`;
     }
 }
 
-// Общие функции для сообщений
+// РћР±С‰РёРµ С„СѓРЅРєС†РёРё РґР»СЏ СЃРѕРѕР±С‰РµРЅРёР№
 function showMessage(text, type = 'info') {
     const messageDiv = document.getElementById('message');
     if (!messageDiv) return;
@@ -91,20 +91,20 @@ function showMessage(text, type = 'info') {
     }, 5000);
 }
 
-// Установка времени в формах
+// РЈСЃС‚Р°РЅРѕРІРєР° РІСЂРµРјРµРЅРё РІ С„РѕСЂРјР°С…
 function setupTimeInputs() {
     const now = new Date();
     const currentTime = now.toTimeString().substr(0, 5);
     const endTime = new Date(now.getTime() + 2 * 60 * 60 * 1000).toTimeString().substr(0, 5);
     
-    // Для dashboard
+    // Р”Р»СЏ dashboard
     const quickStartTime = document.getElementById('quickStartTime');
     const quickEndTime = document.getElementById('quickEndTime');
     
     if (quickStartTime) quickStartTime.value = currentTime;
     if (quickEndTime) quickEndTime.value = endTime;
     
-    // Устанавливаем текущую дату
+    // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С‚РµРєСѓС‰СѓСЋ РґР°С‚Сѓ
     const today = new Date().toISOString().split('T')[0];
     const dateInputs = document.querySelectorAll('input[type="date"]');
     dateInputs.forEach(input => {
@@ -112,15 +112,15 @@ function setupTimeInputs() {
     });
 }
 
-// ==================== АУТЕНТИФИКАЦИЯ ====================
+// ==================== РђРЈРўР•РќРўРР¤РРљРђР¦РРЇ ====================
 
-// Вход
+// Р’С…РѕРґ
 async function login() {
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
     
     if (!username || !password) {
-        showMessage('Заполните все поля', 'error');
+        showMessage('Р—Р°РїРѕР»РЅРёС‚Рµ РІСЃРµ РїРѕР»СЏ', 'error');
         return;
     }
     
@@ -141,23 +141,23 @@ async function login() {
             localStorage.setItem('user', JSON.stringify(currentUser));
             localStorage.setItem('token', currentToken);
             initPage();
-            showMessage('Вход выполнен!', 'success');
+            showMessage('Р’С…РѕРґ РІС‹РїРѕР»РЅРµРЅ!', 'success');
         } else {
             showMessage(data.message, 'error');
         }
     } catch (error) {
-        showMessage('Ошибка подключения к серверу', 'error');
+        showMessage('РћС€РёР±РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµСЂРІРµСЂСѓ', 'error');
     }
 }
 
-// Регистрация
+// Р РµРіРёСЃС‚СЂР°С†РёСЏ
 async function register() {
     const username = document.getElementById('regUsername').value;
     const email = document.getElementById('regEmail').value;
     const password = document.getElementById('regPassword').value;
     
     if (!username || !email || !password) {
-        showMessage('Заполните все поля', 'error');
+        showMessage('Р—Р°РїРѕР»РЅРёС‚Рµ РІСЃРµ РїРѕР»СЏ', 'error');
         return;
     }
     
@@ -178,16 +178,16 @@ async function register() {
             localStorage.setItem('user', JSON.stringify(currentUser));
             localStorage.setItem('token', currentToken);
             initPage();
-            showMessage('Регистрация успешна!', 'success');
+            showMessage('Р РµРіРёСЃС‚СЂР°С†РёСЏ СѓСЃРїРµС€РЅР°!', 'success');
         } else {
             showMessage(data.message, 'error');
         }
     } catch (error) {
-        showMessage('Ошибка подключения к серверу', 'error');
+        showMessage('РћС€РёР±РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµСЂРІРµСЂСѓ', 'error');
     }
 }
 
-// Показать форму регистрации
+// РџРѕРєР°Р·Р°С‚СЊ С„РѕСЂРјСѓ СЂРµРіРёСЃС‚СЂР°С†РёРё
 function showRegister() {
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
@@ -195,7 +195,7 @@ function showRegister() {
     }
 }
 
-// Выход
+// Р’С‹С…РѕРґ
 function logout() {
     currentUser = null;
     currentToken = null;
@@ -204,14 +204,14 @@ function logout() {
     window.location.href = 'index.html';
 }
 
-// ==================== DASHBOARD ФУНКЦИИ ====================
+// ==================== DASHBOARD Р¤РЈРќРљР¦РР ====================
 
 function initDashboard() {
     loadDashboardStats();
     loadRecentSessions();
 }
 
-// Загрузить статистику для dashboard
+// Р—Р°РіСЂСѓР·РёС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ РґР»СЏ dashboard
 async function loadDashboardStats() {
     if (!currentToken) return;
     
@@ -228,11 +228,11 @@ async function loadDashboardStats() {
             updateDashboardStats(sessions);
         }
     } catch (error) {
-        console.error('Ошибка загрузки статистики:', error);
+        console.error('РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё СЃС‚Р°С‚РёСЃС‚РёРєРё:', error);
     }
 }
 
-// Обновить статистику на dashboard
+// РћР±РЅРѕРІРёС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ РЅР° dashboard
 function updateDashboardStats(sessions) {
     if (!sessions || sessions.length === 0) {
         updateStatsUI(0, 0, 0, 0);
@@ -243,27 +243,27 @@ function updateDashboardStats(sessions) {
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
     
-    // Фильтруем сессии
+    // Р¤РёР»СЊС‚СЂСѓРµРј СЃРµСЃСЃРёРё
     const todaySessions = sessions.filter(s => s.session_date === today);
     const weekSessions = sessions.filter(s => {
         const sessionDate = new Date(s.session_date);
         return sessionDate >= oneWeekAgo;
     });
     
-    // Рассчитываем время
+    // Р Р°СЃСЃС‡РёС‚С‹РІР°РµРј РІСЂРµРјСЏ
     const todayTime = calculateTotalTime(todaySessions);
     const weekTime = calculateTotalTime(weekSessions);
     const totalSessions = sessions.length;
     const totalTasks = sessions.reduce((sum, session) => sum + (session.tasks_completed || 0), 0);
     
-    // Обновляем UI
+    // РћР±РЅРѕРІР»СЏРµРј UI
     document.getElementById('todayTime').textContent = todayTime;
     document.getElementById('weekTime').textContent = weekTime;
     document.getElementById('totalSessions').textContent = totalSessions;
     document.getElementById('totalTasksCompleted').textContent = totalTasks;
 }
 
-// Рассчитать общее время из сессий
+// Р Р°СЃСЃС‡РёС‚Р°С‚СЊ РѕР±С‰РµРµ РІСЂРµРјСЏ РёР· СЃРµСЃСЃРёР№
 function calculateTotalTime(sessions) {
     let totalMinutes = 0;
     
@@ -276,15 +276,15 @@ function calculateTotalTime(sessions) {
     const minutes = totalMinutes % 60;
     
     if (hours === 0) {
-        return `${minutes}м`;
+        return `${minutes}Рј`;
     } else if (minutes === 0) {
-        return `${hours}ч`;
+        return `${hours}С‡`;
     } else {
-        return `${hours}ч ${minutes}м`;
+        return `${hours}С‡ ${minutes}Рј`;
     }
 }
 
-// Обновить UI статистики (заглушка)
+// РћР±РЅРѕРІРёС‚СЊ UI СЃС‚Р°С‚РёСЃС‚РёРєРё (Р·Р°РіР»СѓС€РєР°)
 function updateStatsUI(todayTime, weekTime, totalSessions, totalTasks) {
     const elements = {
         'todayTime': todayTime,
@@ -301,7 +301,7 @@ function updateStatsUI(todayTime, weekTime, totalSessions, totalTasks) {
     });
 }
 
-// Загрузить последние сессии для dashboard
+// Р—Р°РіСЂСѓР·РёС‚СЊ РїРѕСЃР»РµРґРЅРёРµ СЃРµСЃСЃРёРё РґР»СЏ dashboard
 async function loadRecentSessions() {
     if (!currentToken) return;
     
@@ -309,7 +309,7 @@ async function loadRecentSessions() {
     const noRecentSessionsDiv = document.getElementById('noRecentSessions');
     const loadingDiv = document.getElementById('loadingRecentSessions');
     
-    if (recentSessionsDiv) recentSessionsDiv.innerHTML = '<div class="loading">Загрузка...</div>';
+    if (recentSessionsDiv) recentSessionsDiv.innerHTML = '<div class="loading">Р—Р°РіСЂСѓР·РєР°...</div>';
     if (noRecentSessionsDiv) noRecentSessionsDiv.classList.add('hidden');
     
     try {
@@ -322,16 +322,16 @@ async function loadRecentSessions() {
         
         if (response.ok) {
             const sessions = await response.json();
-            displayRecentSessions(sessions.slice(0, 5)); // Показываем только 5 последних
+            displayRecentSessions(sessions.slice(0, 5)); // РџРѕРєР°Р·С‹РІР°РµРј С‚РѕР»СЊРєРѕ 5 РїРѕСЃР»РµРґРЅРёС…
         }
     } catch (error) {
         if (recentSessionsDiv) {
-            recentSessionsDiv.innerHTML = '<div class="error">Ошибка загрузки</div>';
+            recentSessionsDiv.innerHTML = '<div class="error">РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё</div>';
         }
     }
 }
 
-// Отобразить последние сессии на dashboard
+// РћС‚РѕР±СЂР°Р·РёС‚СЊ РїРѕСЃР»РµРґРЅРёРµ СЃРµСЃСЃРёРё РЅР° dashboard
 function displayRecentSessions(sessions) {
     const recentSessionsDiv = document.getElementById('recentSessions');
     const noRecentSessionsDiv = document.getElementById('noRecentSessions');
@@ -351,31 +351,31 @@ function displayRecentSessions(sessions) {
             <div class="session-info-compact">
                 <div class="session-date-compact">${formatDateShort(session.session_date)}</div>
                 <div class="session-time-compact">${session.start_time} - ${session.end_time} (${session.duration})</div>
-                <div class="session-tasks-compact">✅ ${session.tasks_completed}</div>
+                <div class="session-tasks-compact">вњ… ${session.tasks_completed}</div>
             </div>
             <div class="session-actions-compact">
-                <button class="btn-expand" onclick="toggleSessionDetails(${session.id})" title="Подробнее">
+                <button class="btn-expand" onclick="toggleSessionDetails(${session.id})" title="РџРѕРґСЂРѕР±РЅРµРµ">
                     <i class="fas fa-chevron-down"></i>
                 </button>
             </div>
             <div class="session-details hidden" id="details-${session.id}">
                 ${session.comments ? `
                     <div class="session-comment">
-                        <strong>Комментарий:</strong> ${session.comments}
+                        <strong>РљРѕРјРјРµРЅС‚Р°СЂРёР№:</strong> ${session.comments}
                     </div>
-                ` : '<div class="session-comment"><em>Нет комментария</em></div>'}
+                ` : '<div class="session-comment"><em>РќРµС‚ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ</em></div>'}
                 <div class="session-actions">
-                    <small>Добавлено: ${formatDateTime(session.created_at)}</small>
+                    <small>Р”РѕР±Р°РІР»РµРЅРѕ: ${formatDateTime(session.created_at)}</small>
                 </div>
             </div>
         </div>
     `).join('');
 }
 
-// Добавить быструю сессию с dashboard
+// Р”РѕР±Р°РІРёС‚СЊ Р±С‹СЃС‚СЂСѓСЋ СЃРµСЃСЃРёСЋ СЃ dashboard
 async function addQuickSession() {
     if (!currentToken) {
-        showMessage('Сначала войдите в систему', 'error');
+        showMessage('РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРёС‚Рµ РІ СЃРёСЃС‚РµРјСѓ', 'error');
         return;
     }
     
@@ -386,7 +386,7 @@ async function addQuickSession() {
     const today = new Date().toISOString().split('T')[0];
     
     if (!startTime || !endTime) {
-        showMessage('Укажите время начала и окончания', 'error');
+        showMessage('РЈРєР°Р¶РёС‚Рµ РІСЂРµРјСЏ РЅР°С‡Р°Р»Р° Рё РѕРєРѕРЅС‡Р°РЅРёСЏ', 'error');
         return;
     }
     
@@ -409,15 +409,15 @@ async function addQuickSession() {
         const data = await response.json();
         
         if (response.ok) {
-            showMessage('Сессия добавлена!', 'success');
+            showMessage('РЎРµСЃСЃРёСЏ РґРѕР±Р°РІР»РµРЅР°!', 'success');
             loadDashboardStats();
             loadRecentSessions();
             
-            // Очистить форму
+            // РћС‡РёСЃС‚РёС‚СЊ С„РѕСЂРјСѓ
             document.getElementById('quickTasks').value = 0;
             document.getElementById('quickComment').value = '';
             
-            // Установить новое время по умолчанию
+            // РЈСЃС‚Р°РЅРѕРІРёС‚СЊ РЅРѕРІРѕРµ РІСЂРµРјСЏ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
             const now = new Date();
             document.getElementById('quickStartTime').value = now.toTimeString().substr(0, 5);
             document.getElementById('quickEndTime').value = new Date(now.getTime() + 2 * 60 * 60 * 1000).toTimeString().substr(0, 5);
@@ -425,11 +425,11 @@ async function addQuickSession() {
             showMessage(data.message, 'error');
         }
     } catch (error) {
-        showMessage('Ошибка подключения к серверу', 'error');
+        showMessage('РћС€РёР±РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµСЂРІРµСЂСѓ', 'error');
     }
 }
 
-// Начать быструю сессию (текущее время + 2 часа)
+// РќР°С‡Р°С‚СЊ Р±С‹СЃС‚СЂСѓСЋ СЃРµСЃСЃРёСЋ (С‚РµРєСѓС‰РµРµ РІСЂРµРјСЏ + 2 С‡Р°СЃР°)
 function startQuickSession() {
     const now = new Date();
     const startTime = now.toTimeString().substr(0, 5);
@@ -438,15 +438,15 @@ function startQuickSession() {
     document.getElementById('quickStartTime').value = startTime;
     document.getElementById('quickEndTime').value = endTime;
     document.getElementById('quickTasks').value = 0;
-    document.getElementById('quickComment').value = 'Работа над проектом';
+    document.getElementById('quickComment').value = 'Р Р°Р±РѕС‚Р° РЅР°Рґ РїСЂРѕРµРєС‚РѕРј';
     
-    showMessage('Заполнена форма быстрой сессии', 'info');
+    showMessage('Р—Р°РїРѕР»РЅРµРЅР° С„РѕСЂРјР° Р±С‹СЃС‚СЂРѕР№ СЃРµСЃСЃРёРё', 'info');
 }
 
-// Добавить тестовую сессию
+// Р”РѕР±Р°РІРёС‚СЊ С‚РµСЃС‚РѕРІСѓСЋ СЃРµСЃСЃРёСЋ
 async function addTestSession() {
     if (!currentToken) {
-        showMessage('Сначала войдите в систему', 'error');
+        showMessage('РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРёС‚Рµ РІ СЃРёСЃС‚РµРјСѓ', 'error');
         return;
     }
     
@@ -456,11 +456,11 @@ async function addTestSession() {
     const endTime = now.toTimeString().substr(0, 5);
     
     const testComments = [
-        'Изучал Python и Flask',
-        'Работал над фронтендом проекта',
-        'Оптимизировал базу данных',
-        'Написал документацию',
-        'Проходил онлайн-курс'
+        'РР·СѓС‡Р°Р» Python Рё Flask',
+        'Р Р°Р±РѕС‚Р°Р» РЅР°Рґ С„СЂРѕРЅС‚РµРЅРґРѕРј РїСЂРѕРµРєС‚Р°',
+        'РћРїС‚РёРјРёР·РёСЂРѕРІР°Р» Р±Р°Р·Сѓ РґР°РЅРЅС‹С…',
+        'РќР°РїРёСЃР°Р» РґРѕРєСѓРјРµРЅС‚Р°С†РёСЋ',
+        'РџСЂРѕС…РѕРґРёР» РѕРЅР»Р°Р№РЅ-РєСѓСЂСЃ'
     ];
     
     const randomComment = testComments[Math.floor(Math.random() * testComments.length)];
@@ -484,24 +484,24 @@ async function addTestSession() {
         const data = await response.json();
         
         if (response.ok) {
-            showMessage('Тестовая сессия добавлена!', 'success');
+            showMessage('РўРµСЃС‚РѕРІР°СЏ СЃРµСЃСЃРёСЏ РґРѕР±Р°РІР»РµРЅР°!', 'success');
             loadDashboardStats();
             loadRecentSessions();
         } else {
             showMessage(data.message, 'error');
         }
     } catch (error) {
-        showMessage('Ошибка подключения к серверу', 'error');
+        showMessage('РћС€РёР±РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµСЂРІРµСЂСѓ', 'error');
     }
 }
 
-// ==================== SESSIONS PAGE ФУНКЦИИ ====================
+// ==================== SESSIONS PAGE Р¤РЈРќРљР¦РР ====================
 
 function initSessionsPage() {
     loadSessions();
 }
 
-// Загрузить все сессии
+// Р—Р°РіСЂСѓР·РёС‚СЊ РІСЃРµ СЃРµСЃСЃРёРё
 async function loadSessions() {
     if (!currentToken) return;
     
@@ -528,19 +528,19 @@ async function loadSessions() {
             displayAllSessions();
             updateSessionsStats();
             
-            // Активируем фильтр "Все" по умолчанию
+            // РђРєС‚РёРІРёСЂСѓРµРј С„РёР»СЊС‚СЂ "Р’СЃРµ" РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
             setActiveFilter('all');
         }
     } catch (error) {
         if (sessionsList) {
-            sessionsList.innerHTML = '<div class="error">Ошибка загрузки сессий</div>';
+            sessionsList.innerHTML = '<div class="error">РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё СЃРµСЃСЃРёР№</div>';
         }
     } finally {
         if (loadingDiv) loadingDiv.classList.add('hidden');
     }
 }
 
-// Отобразить все сессии
+// РћС‚РѕР±СЂР°Р·РёС‚СЊ РІСЃРµ СЃРµСЃСЃРёРё
 function displayAllSessions() {
     const sessionsList = document.getElementById('sessionsList');
     const noSessionsDiv = document.getElementById('noSessionsMessage');
@@ -560,31 +560,31 @@ function displayAllSessions() {
             <div class="session-info-compact">
                 <div class="session-date-compact">${formatDateShort(session.session_date)}</div>
                 <div class="session-time-compact">${session.start_time} - ${session.end_time} (${session.duration})</div>
-                <div class="session-tasks-compact">✅ ${session.tasks_completed}</div>
+                <div class="session-tasks-compact">вњ… ${session.tasks_completed}</div>
             </div>
             <div class="session-actions-compact">
-                <button class="btn-expand" onclick="toggleSessionDetails(${session.id})" title="Подробнее">
+                <button class="btn-expand" onclick="toggleSessionDetails(${session.id})" title="РџРѕРґСЂРѕР±РЅРµРµ">
                     <i class="fas fa-chevron-down"></i>
                 </button>
             </div>
             <div class="session-details hidden" id="details-${session.id}">
                 ${session.comments ? `
                     <div class="session-comment">
-                        <strong>Комментарий:</strong> ${session.comments}
+                        <strong>РљРѕРјРјРµРЅС‚Р°СЂРёР№:</strong> ${session.comments}
                     </div>
-                ` : '<div class="session-comment"><em>Нет комментария</em></div>'}
+                ` : '<div class="session-comment"><em>РќРµС‚ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ</em></div>'}
                 <div class="session-actions">
-                    <small>Добавлено: ${formatDateTime(session.created_at)}</small>
+                    <small>Р”РѕР±Р°РІР»РµРЅРѕ: ${formatDateTime(session.created_at)}</small>
                 </div>
             </div>
         </div>
     `).join('');
 }
 
-// Обновить статистику на странице сессий
+// РћР±РЅРѕРІРёС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ РЅР° СЃС‚СЂР°РЅРёС†Рµ СЃРµСЃСЃРёР№
 function updateSessionsStats() {
     if (!filteredSessions || filteredSessions.length === 0) {
-        updateSessionsStatsUI(0, '0ч', 0, '0ч');
+        updateSessionsStatsUI(0, '0С‡', 0, '0С‡');
         return;
     }
     
@@ -592,7 +592,7 @@ function updateSessionsStats() {
     const totalTime = calculateTotalTime(filteredSessions);
     const totalTasks = filteredSessions.reduce((sum, session) => sum + (session.tasks_completed || 0), 0);
     
-    // Средняя продолжительность сессии
+    // РЎСЂРµРґРЅСЏСЏ РїСЂРѕРґРѕР»Р¶РёС‚РµР»СЊРЅРѕСЃС‚СЊ СЃРµСЃСЃРёРё
     let totalMinutes = 0;
     filteredSessions.forEach(session => {
         const [hours, minutes] = session.duration.split(':').map(Number);
@@ -602,12 +602,12 @@ function updateSessionsStats() {
     const avgMinutes = Math.round(totalMinutes / totalSessions);
     const avgHours = Math.floor(avgMinutes / 60);
     const avgMins = avgMinutes % 60;
-    const avgTime = avgHours > 0 ? `${avgHours}ч ${avgMins}м` : `${avgMins}м`;
+    const avgTime = avgHours > 0 ? `${avgHours}С‡ ${avgMins}Рј` : `${avgMins}Рј`;
     
     updateSessionsStatsUI(totalSessions, totalTime, totalTasks, avgTime);
 }
 
-// Обновить UI статистики сессий
+// РћР±РЅРѕРІРёС‚СЊ UI СЃС‚Р°С‚РёСЃС‚РёРєРё СЃРµСЃСЃРёР№
 function updateSessionsStatsUI(totalSessions, totalTime, totalTasks, avgTime) {
     const elements = {
         'totalSessionsCount': totalSessions,
@@ -624,7 +624,7 @@ function updateSessionsStatsUI(totalSessions, totalTime, totalTasks, avgTime) {
     });
 }
 
-// Фильтрация сессий
+// Р¤РёР»СЊС‚СЂР°С†РёСЏ СЃРµСЃСЃРёР№
 function filterSessions(filterType) {
     if (!allSessions || allSessions.length === 0) return;
     
@@ -663,7 +663,7 @@ function filterSessions(filterType) {
     updateSessionsStats();
 }
 
-// Установить активный фильтр
+// РЈСЃС‚Р°РЅРѕРІРёС‚СЊ Р°РєС‚РёРІРЅС‹Р№ С„РёР»СЊС‚СЂ
 function setActiveFilter(filterType) {
     const filterButtons = document.querySelectorAll('.btn-filter');
     filterButtons.forEach(btn => {
@@ -674,7 +674,7 @@ function setActiveFilter(filterType) {
     });
 }
 
-// Поиск сессий
+// РџРѕРёСЃРє СЃРµСЃСЃРёР№
 function searchSessions() {
     const searchInput = document.getElementById('searchInput');
     if (!searchInput || !allSessions) return;
@@ -694,7 +694,7 @@ function searchSessions() {
     updateSessionsStats();
 }
 
-// Сортировка сессий
+// РЎРѕСЂС‚РёСЂРѕРІРєР° СЃРµСЃСЃРёР№
 function sortSessions() {
     const sortSelect = document.getElementById('sortSelect');
     if (!sortSelect || !filteredSessions) return;
@@ -734,9 +734,9 @@ function sortSessions() {
     displayAllSessions();
 }
 
-// ==================== ОБЩИЕ ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ====================
+// ==================== РћР‘Р©РР• Р’РЎРџРћРњРћР“РђРўР•Р›Р¬РќР«Р• Р¤РЈРќРљР¦РР ====================
 
-// Переключить детали сессии
+// РџРµСЂРµРєР»СЋС‡РёС‚СЊ РґРµС‚Р°Р»Рё СЃРµСЃСЃРёРё
 function toggleSessionDetails(sessionId) {
     const detailsDiv = document.getElementById(`details-${sessionId}`);
     const button = document.querySelector(`#session-${sessionId} .btn-expand i`);
@@ -750,7 +750,7 @@ function toggleSessionDetails(sessionId) {
     }
 }
 
-// Форматирование короткой даты
+// Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ РєРѕСЂРѕС‚РєРѕР№ РґР°С‚С‹
 function formatDateShort(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('ru-RU', {
@@ -760,7 +760,7 @@ function formatDateShort(dateString) {
     });
 }
 
-// Форматирование даты и времени
+// Р¤РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµ РґР°С‚С‹ Рё РІСЂРµРјРµРЅРё
 function formatDateTime(dateTimeString) {
     const date = new Date(dateTimeString);
     return date.toLocaleDateString('ru-RU', {
@@ -772,30 +772,30 @@ function formatDateTime(dateTimeString) {
     });
 }
 
-// Перейти на страницу всех сессий
+// РџРµСЂРµР№С‚Рё РЅР° СЃС‚СЂР°РЅРёС†Сѓ РІСЃРµС… СЃРµСЃСЃРёР№
 function goToAllSessions() {
     window.location.href = 'sessions.html';
 }
 
-// Перейти на dashboard
+// РџРµСЂРµР№С‚Рё РЅР° dashboard
 function goToDashboard() {
     window.location.href = 'index.html';
 }
 
-// Заглушка для задач (если нужно будет добавить позже)
+// Р—Р°РіР»СѓС€РєР° РґР»СЏ Р·Р°РґР°С‡ (РµСЃР»Рё РЅСѓР¶РЅРѕ Р±СѓРґРµС‚ РґРѕР±Р°РІРёС‚СЊ РїРѕР·Р¶Рµ)
 function loadTasks() {
-    showMessage('Функционал задач будет добавлен позже', 'info');
+    showMessage('Р¤СѓРЅРєС†РёРѕРЅР°Р» Р·Р°РґР°С‡ Р±СѓРґРµС‚ РґРѕР±Р°РІР»РµРЅ РїРѕР·Р¶Рµ', 'info');
 }
 
-// ==================== TASKS PAGE ФУНКЦИИ ====================
+// ==================== TASKS PAGE Р¤РЈРќРљР¦РР ====================
 
-// Определяем на какой странице находимся (дополнение)
+// РћРїСЂРµРґРµР»СЏРµРј РЅР° РєР°РєРѕР№ СЃС‚СЂР°РЅРёС†Рµ РЅР°С…РѕРґРёРјСЃСЏ (РґРѕРїРѕР»РЅРµРЅРёРµ)
 if (currentPage === 'tasks.html') {
     initTasksPage();
 }
 
 function initTasksPage() {
-    // Устанавливаем связь между полем ввода и слайдером
+    // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃРІСЏР·СЊ РјРµР¶РґСѓ РїРѕР»РµРј РІРІРѕРґР° Рё СЃР»Р°Р№РґРµСЂРѕРј
     const difficultyInput = document.getElementById('difficulty');
     const difficultySlider = document.getElementById('difficultySlider');
     
@@ -817,19 +817,19 @@ function initTasksPage() {
     loadTaskStats();
 }
 
-// Очистить форму задачи
+// РћС‡РёСЃС‚РёС‚СЊ С„РѕСЂРјСѓ Р·Р°РґР°С‡Рё
 function clearTaskForm() {
     document.getElementById('taskUrl').value = '';
     document.getElementById('difficulty').value = '';
     document.getElementById('difficultySlider').value = 5;
     document.getElementById('taskComment').value = '';
-    showMessage('Форма очищена', 'info');
+    showMessage('Р¤РѕСЂРјР° РѕС‡РёС‰РµРЅР°', 'info');
 }
 
-// Добавить задачу
+// Р”РѕР±Р°РІРёС‚СЊ Р·Р°РґР°С‡Сѓ
 async function addTask() {
     if (!currentToken) {
-        showMessage('Сначала войдите в систему', 'error');
+        showMessage('РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРёС‚Рµ РІ СЃРёСЃС‚РµРјСѓ', 'error');
         return;
     }
     
@@ -838,22 +838,22 @@ async function addTask() {
     const taskComment = document.getElementById('taskComment').value;
     
     if (!taskUrl) {
-        showMessage('Введите ссылку на задачу', 'error');
+        showMessage('Р’РІРµРґРёС‚Рµ СЃСЃС‹Р»РєСѓ РЅР° Р·Р°РґР°С‡Сѓ', 'error');
         return;
     }
     
-    // Проверка URL
+    // РџСЂРѕРІРµСЂРєР° URL
     if (!isValidUrl(taskUrl)) {
-        showMessage('Введите корректную ссылку (начинается с http:// или https://)', 'error');
+        showMessage('Р’РІРµРґРёС‚Рµ РєРѕСЂСЂРµРєС‚РЅСѓСЋ СЃСЃС‹Р»РєСѓ (РЅР°С‡РёРЅР°РµС‚СЃСЏ СЃ http:// РёР»Рё https://)', 'error');
         return;
     }
     
-    // Проверка сложности
+    // РџСЂРѕРІРµСЂРєР° СЃР»РѕР¶РЅРѕСЃС‚Рё
     let difficultyNum = null;
     if (difficulty) {
         difficultyNum = parseInt(difficulty);
         if (difficultyNum < 1 || difficultyNum > 10) {
-            showMessage('Сложность должна быть от 1 до 10', 'error');
+            showMessage('РЎР»РѕР¶РЅРѕСЃС‚СЊ РґРѕР»Р¶РЅР° Р±С‹С‚СЊ РѕС‚ 1 РґРѕ 10', 'error');
             return;
         }
     }
@@ -875,7 +875,7 @@ async function addTask() {
         const data = await response.json();
         
         if (response.ok) {
-            showMessage('Задача успешно добавлена!', 'success');
+            showMessage('Р—Р°РґР°С‡Р° СѓСЃРїРµС€РЅРѕ РґРѕР±Р°РІР»РµРЅР°!', 'success');
             clearTaskForm();
             loadTasks();
             loadTaskStats();
@@ -883,14 +883,14 @@ async function addTask() {
             showMessage(data.message, 'error');
         }
     } catch (error) {
-        showMessage('Ошибка подключения к серверу', 'error');
+        showMessage('РћС€РёР±РєР° РїРѕРґРєР»СЋС‡РµРЅРёСЏ Рє СЃРµСЂРІРµСЂСѓ', 'error');
     }
 }
 
-// Добавить тестовую задачу
+// Р”РѕР±Р°РІРёС‚СЊ С‚РµСЃС‚РѕРІСѓСЋ Р·Р°РґР°С‡Сѓ
 async function addTestTask() {
     if (!currentToken) {
-        showMessage('Сначала войдите в систему', 'error');
+        showMessage('РЎРЅР°С‡Р°Р»Р° РІРѕР№РґРёС‚Рµ РІ СЃРёСЃС‚РµРјСѓ', 'error');
         return;
     }
     
@@ -898,42 +898,42 @@ async function addTestTask() {
         {
             url: 'https://leetcode.com/problems/two-sum/',
             difficulty: 3,
-            comment: 'Классическая задача на хэш-таблицы. Нужно найти два числа, сумма которых равна target.'
+            comment: 'РљР»Р°СЃСЃРёС‡РµСЃРєР°СЏ Р·Р°РґР°С‡Р° РЅР° С…СЌС€-С‚Р°Р±Р»РёС†С‹. РќСѓР¶РЅРѕ РЅР°Р№С‚Рё РґРІР° С‡РёСЃР»Р°, СЃСѓРјРјР° РєРѕС‚РѕСЂС‹С… СЂР°РІРЅР° target.'
         },
         {
             url: 'https://leetcode.com/problems/valid-parentheses/',
             difficulty: 2,
-            comment: 'Проверка правильности скобок с использованием стека.'
+            comment: 'РџСЂРѕРІРµСЂРєР° РїСЂР°РІРёР»СЊРЅРѕСЃС‚Рё СЃРєРѕР±РѕРє СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј СЃС‚РµРєР°.'
         },
         {
             url: 'https://leetcode.com/problems/merge-two-sorted-lists/',
             difficulty: 4,
-            comment: 'Слияние двух отсортированных связных списков в один отсортированный список.'
+            comment: 'РЎР»РёСЏРЅРёРµ РґРІСѓС… РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹С… СЃРІСЏР·РЅС‹С… СЃРїРёСЃРєРѕРІ РІ РѕРґРёРЅ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ СЃРїРёСЃРѕРє.'
         },
         {
             url: 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock/',
             difficulty: 5,
-            comment: 'Найти максимальную прибыль от покупки и продажи акций.'
+            comment: 'РќР°Р№С‚Рё РјР°РєСЃРёРјР°Р»СЊРЅСѓСЋ РїСЂРёР±С‹Р»СЊ РѕС‚ РїРѕРєСѓРїРєРё Рё РїСЂРѕРґР°Р¶Рё Р°РєС†РёР№.'
         },
         {
             url: 'https://leetcode.com/problems/container-with-most-water/',
             difficulty: 6,
-            comment: 'Найти два столбца, которые вмещают максимальное количество воды.'
+            comment: 'РќР°Р№С‚Рё РґРІР° СЃС‚РѕР»Р±С†Р°, РєРѕС‚РѕСЂС‹Рµ РІРјРµС‰Р°СЋС‚ РјР°РєСЃРёРјР°Р»СЊРЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РІРѕРґС‹.'
         }
     ];
     
     const randomTask = testTasks[Math.floor(Math.random() * testTasks.length)];
     
-    // Заполняем форму
+    // Р—Р°РїРѕР»РЅСЏРµРј С„РѕСЂРјСѓ
     document.getElementById('taskUrl').value = randomTask.url;
     document.getElementById('difficulty').value = randomTask.difficulty;
     document.getElementById('difficultySlider').value = randomTask.difficulty;
     document.getElementById('taskComment').value = randomTask.comment;
     
-    showMessage('Форма заполнена тестовыми данными', 'info');
+    showMessage('Р¤РѕСЂРјР° Р·Р°РїРѕР»РЅРµРЅР° С‚РµСЃС‚РѕРІС‹РјРё РґР°РЅРЅС‹РјРё', 'info');
 }
 
-// Проверка валидности URL
+// РџСЂРѕРІРµСЂРєР° РІР°Р»РёРґРЅРѕСЃС‚Рё URL
 function isValidUrl(string) {
     try {
         new URL(string);
@@ -943,7 +943,7 @@ function isValidUrl(string) {
     }
 }
 
-// Загрузить задачи
+// Р—Р°РіСЂСѓР·РёС‚СЊ Р·Р°РґР°С‡Рё
 async function loadTasks() {
     if (!currentToken) return;
     
@@ -971,15 +971,15 @@ async function loadTasks() {
         }
     } catch (error) {
         if (tasksList) {
-            tasksList.innerHTML = '<div class="error">Ошибка загрузки задач</div>';
+            tasksList.innerHTML = '<div class="error">РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё Р·Р°РґР°С‡</div>';
         }
-        console.error('Ошибка загрузки задач:', error);
+        console.error('РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё Р·Р°РґР°С‡:', error);
     } finally {
         if (loadingDiv) loadingDiv.classList.add('hidden');
     }
 }
 
-// Отобразить задачи
+// РћС‚РѕР±СЂР°Р·РёС‚СЊ Р·Р°РґР°С‡Рё
 function displayTasks() {
     const tasksList = document.getElementById('tasksList');
     const noTasksDiv = document.getElementById('noTasksMessage');
@@ -999,31 +999,31 @@ function displayTasks() {
             <div class="task-header">
                 <div class="task-title">
                     <a href="${task.task_url}" target="_blank" class="task-link">
-                        <i class="fas fa-external-link-alt"></i> Задача
+                        <i class="fas fa-external-link-alt"></i> Р—Р°РґР°С‡Р°
                     </a>
                 </div>
                 <div class="task-actions">
                     ${task.difficulty ? 
                         `<span class="difficulty-indicator difficulty-${task.difficulty}">
-                            Сложность: ${task.difficulty}/10
+                            РЎР»РѕР¶РЅРѕСЃС‚СЊ: ${task.difficulty}/10
                         </span>` : 
-                        '<span class="difficulty-indicator" style="background: #a0aec0;">Сложность не указана</span>'
+                        '<span class="difficulty-indicator" style="background: #a0aec0;">РЎР»РѕР¶РЅРѕСЃС‚СЊ РЅРµ СѓРєР°Р·Р°РЅР°</span>'
                     }
-                    <button class="btn-delete-task" onclick="deleteTask(${task.id})" title="Удалить задачу">
-                        <i class="fas fa-trash"></i> Удалить
+                    <button class="btn-delete-task" onclick="deleteTask(${task.id})" title="РЈРґР°Р»РёС‚СЊ Р·Р°РґР°С‡Сѓ">
+                        <i class="fas fa-trash"></i> РЈРґР°Р»РёС‚СЊ
                     </button>
                 </div>
             </div>
             
             <div class="task-meta">
                 <div class="task-date">
-                    <i class="far fa-calendar"></i> Добавлено: ${formatDateTime(task.created_at)}
+                    <i class="far fa-calendar"></i> Р”РѕР±Р°РІР»РµРЅРѕ: ${formatDateTime(task.created_at)}
                 </div>
             </div>
             
             ${task.comment ? `
                 <div class="task-comment">
-                    <strong><i class="fas fa-comment"></i> Комментарий:</strong><br>
+                    <strong><i class="fas fa-comment"></i> РљРѕРјРјРµРЅС‚Р°СЂРёР№:</strong><br>
                     ${task.comment}
                 </div>
             ` : ''}
@@ -1031,7 +1031,7 @@ function displayTasks() {
     `).join('');
 }
 
-// Загрузить статистику задач
+// Р—Р°РіСЂСѓР·РёС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ Р·Р°РґР°С‡
 async function loadTaskStats() {
     if (!currentToken) return;
     
@@ -1051,12 +1051,12 @@ async function loadTaskStats() {
             displayTaskStats(stats);
         }
     } catch (error) {
-        taskStatsDiv.innerHTML = '<div class="error">Ошибка загрузки статистики</div>';
-        console.error('Ошибка загрузки статистики задач:', error);
+        taskStatsDiv.innerHTML = '<div class="error">РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё СЃС‚Р°С‚РёСЃС‚РёРєРё</div>';
+        console.error('РћС€РёР±РєР° Р·Р°РіСЂСѓР·РєРё СЃС‚Р°С‚РёСЃС‚РёРєРё Р·Р°РґР°С‡:', error);
     }
 }
 
-// Отобразить статистику задач
+// РћС‚РѕР±СЂР°Р·РёС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ Р·Р°РґР°С‡
 function displayTaskStats(stats) {
     const taskStatsDiv = document.getElementById('taskStats');
     if (!taskStatsDiv) return;
@@ -1065,11 +1065,11 @@ function displayTaskStats(stats) {
         <div class="stats">
             <div class="stat-card">
                 <div class="stat-value">${stats.total_tasks || 0}</div>
-                <div class="stat-label">Всего задач</div>
+                <div class="stat-label">Р’СЃРµРіРѕ Р·Р°РґР°С‡</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value">${stats.avg_difficulty ? stats.avg_difficulty.toFixed(1) : 0}</div>
-                <div class="stat-label">Средняя сложность</div>
+                <div class="stat-label">РЎСЂРµРґРЅСЏСЏ СЃР»РѕР¶РЅРѕСЃС‚СЊ</div>
             </div>
     `;
     
@@ -1077,18 +1077,18 @@ function displayTaskStats(stats) {
         statsHTML += `
             <div class="stat-card">
                 <div class="stat-value">${stats.difficulty_distribution.length}</div>
-                <div class="stat-label">Уровней сложности</div>
+                <div class="stat-label">РЈСЂРѕРІРЅРµР№ СЃР»РѕР¶РЅРѕСЃС‚Рё</div>
             </div>
         `;
         
-        // Диаграмма распределения сложности
+        // Р”РёР°РіСЂР°РјРјР° СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ СЃР»РѕР¶РЅРѕСЃС‚Рё
         let chartHTML = '<div class="difficulty-chart">';
         stats.difficulty_distribution.forEach(item => {
             const maxCount = Math.max(...stats.difficulty_distribution.map(d => d.count));
             const height = maxCount > 0 ? (item.count / maxCount * 80) : 0;
             
             chartHTML += `
-                <div class="chart-bar" title="Сложность ${item.difficulty}: ${item.count} задач">
+                <div class="chart-bar" title="РЎР»РѕР¶РЅРѕСЃС‚СЊ ${item.difficulty}: ${item.count} Р·Р°РґР°С‡">
                     <div class="bar-fill" style="height: ${height}px"></div>
                     <div class="bar-label">${item.difficulty}</div>
                     <div class="bar-count">${item.count}</div>
@@ -1099,13 +1099,13 @@ function displayTaskStats(stats) {
         
         taskStatsDiv.innerHTML = statsHTML + '</div>' + chartHTML;
     } else {
-        taskStatsDiv.innerHTML = statsHTML + '</div><div class="info">Нет данных для статистики</div>';
+        taskStatsDiv.innerHTML = statsHTML + '</div><div class="info">РќРµС‚ РґР°РЅРЅС‹С… РґР»СЏ СЃС‚Р°С‚РёСЃС‚РёРєРё</div>';
     }
 }
 
-// Удалить задачу
+// РЈРґР°Р»РёС‚СЊ Р·Р°РґР°С‡Сѓ
 async function deleteTask(taskId) {
-    if (!confirm('Удалить эту задачу?')) {
+    if (!confirm('РЈРґР°Р»РёС‚СЊ СЌС‚Сѓ Р·Р°РґР°С‡Сѓ?')) {
         return;
     }
     
@@ -1118,7 +1118,7 @@ async function deleteTask(taskId) {
         });
         
         if (response.ok) {
-            // Удаляем из локальных массивов
+            // РЈРґР°Р»СЏРµРј РёР· Р»РѕРєР°Р»СЊРЅС‹С… РјР°СЃСЃРёРІРѕРІ
             if (window.allTasks) {
                 window.allTasks = window.allTasks.filter(task => task.id !== taskId);
             }
@@ -1126,20 +1126,20 @@ async function deleteTask(taskId) {
                 window.filteredTasks = window.filteredTasks.filter(task => task.id !== taskId);
             }
             
-            // Обновляем отображение
+            // РћР±РЅРѕРІР»СЏРµРј РѕС‚РѕР±СЂР°Р¶РµРЅРёРµ
             displayTasks();
             loadTaskStats();
-            showMessage('Задача удалена', 'success');
+            showMessage('Р—Р°РґР°С‡Р° СѓРґР°Р»РµРЅР°', 'success');
         } else {
             const data = await response.json();
             showMessage(data.message, 'error');
         }
     } catch (error) {
-        showMessage('Ошибка удаления задачи', 'error');
+        showMessage('РћС€РёР±РєР° СѓРґР°Р»РµРЅРёСЏ Р·Р°РґР°С‡Рё', 'error');
     }
 }
 
-// Фильтрация задач по сложности
+// Р¤РёР»СЊС‚СЂР°С†РёСЏ Р·Р°РґР°С‡ РїРѕ СЃР»РѕР¶РЅРѕСЃС‚Рё
 function filterTasks(filterType) {
     if (!window.allTasks || window.allTasks.length === 0) return;
     
@@ -1166,12 +1166,12 @@ function filterTasks(filterType) {
             window.filteredTasks = [...window.allTasks];
     }
     
-    // Обновляем активную кнопку фильтра
+    // РћР±РЅРѕРІР»СЏРµРј Р°РєС‚РёРІРЅСѓСЋ РєРЅРѕРїРєСѓ С„РёР»СЊС‚СЂР°
     setActiveTaskFilter(filterType);
     displayTasks();
 }
 
-// Установить активный фильтр задач
+// РЈСЃС‚Р°РЅРѕРІРёС‚СЊ Р°РєС‚РёРІРЅС‹Р№ С„РёР»СЊС‚СЂ Р·Р°РґР°С‡
 function setActiveTaskFilter(filterType) {
     const filterButtons = document.querySelectorAll('.task-filter .btn-filter, .filters .btn-filter');
     filterButtons.forEach(btn => {
@@ -1182,7 +1182,7 @@ function setActiveTaskFilter(filterType) {
     });
 }
 
-// Поиск задач
+// РџРѕРёСЃРє Р·Р°РґР°С‡
 function searchTasks() {
     const searchInput = document.getElementById('taskSearchInput');
     if (!searchInput || !window.allTasks) return;
@@ -1202,7 +1202,7 @@ function searchTasks() {
     displayTasks();
 }
 
-// Сортировка задач
+// РЎРѕСЂС‚РёСЂРѕРІРєР° Р·Р°РґР°С‡
 function sortTasks() {
     const sortSelect = document.getElementById('taskSortSelect');
     if (!sortSelect || !window.filteredTasks) return;
@@ -1230,21 +1230,21 @@ function sortTasks() {
     displayTasks();
 }
 
-// Экспорт задач (заглушка)
+// Р­РєСЃРїРѕСЂС‚ Р·Р°РґР°С‡ (Р·Р°РіР»СѓС€РєР°)
 function exportTasks() {
     if (!window.filteredTasks || window.filteredTasks.length === 0) {
-        showMessage('Нет задач для экспорта', 'info');
+        showMessage('РќРµС‚ Р·Р°РґР°С‡ РґР»СЏ СЌРєСЃРїРѕСЂС‚Р°', 'info');
         return;
     }
     
-    // Простой экспорт в CSV
+    // РџСЂРѕСЃС‚РѕР№ СЌРєСЃРїРѕСЂС‚ РІ CSV
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Ссылка,Сложность,Комментарий,Дата добавления\n";
+    csvContent += "РЎСЃС‹Р»РєР°,РЎР»РѕР¶РЅРѕСЃС‚СЊ,РљРѕРјРјРµРЅС‚Р°СЂРёР№,Р”Р°С‚Р° РґРѕР±Р°РІР»РµРЅРёСЏ\n";
     
     window.filteredTasks.forEach(task => {
         const row = [
             `"${task.task_url}"`,
-            task.difficulty || 'Не указана',
+            task.difficulty || 'РќРµ СѓРєР°Р·Р°РЅР°',
             `"${(task.comment || '').replace(/"/g, '""')}"`,
             task.created_at
         ].join(',');
@@ -1259,5 +1259,5 @@ function exportTasks() {
     link.click();
     document.body.removeChild(link);
     
-    showMessage('Задачи экспортированы в CSV', 'success');
+    showMessage('Р—Р°РґР°С‡Рё СЌРєСЃРїРѕСЂС‚РёСЂРѕРІР°РЅС‹ РІ CSV', 'success');
 }
