@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = 'https://session-tracker.up.railway.app/api';
 
 let currentUser = null;
 let currentToken = null;
